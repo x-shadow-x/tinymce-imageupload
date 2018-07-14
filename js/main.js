@@ -133,16 +133,16 @@ function uploadpic(editor, imgList, imageUploadUrl) {
         response = response.data;
         if (typeof response != "object" || response == null || typeof response.error == 'undefined') {
             removeForeground();
-            showImageUploadError('上传出错：1');
+            alert('上传出错');
         }
         else {
             if (response.error != false) {
                 switch (response.error) {
                     case ("filetype"):
-                        showImageUploadError('请选择图片格式的文件上传');
+                        alert('请选择图片格式的文件上传');
                         break;
                     default:
-                        showImageUploadError('未知错误：1');
+                        alert('未知错误');
                         break;
                 }
             }
@@ -155,7 +155,7 @@ function uploadpic(editor, imgList, imageUploadUrl) {
                     
                     editor.focus();
                 } else {
-                    showImageUploadError('未知错误：2');
+                    alert('后端数据错误');
                 }
             }
         }
