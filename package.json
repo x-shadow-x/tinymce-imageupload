@@ -1,6 +1,6 @@
 {
     "name": "tinymce-imageupload",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "tinymce富文本图片上传插件",
     "main": "index.js",
     "scripts": {
