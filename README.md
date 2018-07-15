@@ -37,4 +37,4 @@ tinymce.init({
 
 ## Result
 
-![demo](https://raw.githubusercontent.com/x-shadow-x/tinymce-imageupload/master/demo.gif)
+![demo](http://o7zfl2ftp.bkt.clouddn.com/demo.gif)
