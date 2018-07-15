@@ -22,7 +22,7 @@ function imagePreview(files, orignalLen, $contain) {
     for (let i = 0; i < files.length; i++) { //预览新添加的图片
         let file = files[i];
         let imageType = /^image\//;
-        
+
         if (!imageType.test(file.type)) {
             alert("请选择图片类型上传");
             continue;
@@ -31,7 +31,7 @@ function imagePreview(files, orignalLen, $contain) {
         let imgOutBox = createElem("span", {
             className: "prev-img-out-box"
         });
-        
+
         let imgBox = createElem("div", {
             className: "prev-img-box"
         });
@@ -67,7 +67,7 @@ function imagePreview(files, orignalLen, $contain) {
 
         reader.readAsDataURL(file);
     }
-    
+
     $contain.prepend(frame);
 }
 
@@ -110,12 +110,13 @@ function parentNodes(target, selector) {
 
 /**
  * 上传图片
- * @param {dom} editor 
+ * @param {dom} editor
  * @param {Object} imgList 类数组，需要上传的图片的集合
  * @param {string} imageUploadUrl 接收上传图片的服务器url
+ * @param {function} convertCb 响应数据的数据结构转换函数
  */
-function uploadpic(editor, imgList, imageUploadUrl) {
-                    
+function uploadpic(editor, imgList, imageUploadUrl, convertCb) {
+
     /* eslint-disable no-undef */
     let param = new FormData()  // 创建form对象
     const files = imgList;
@@ -129,14 +130,13 @@ function uploadpic(editor, imgList, imageUploadUrl) {
         headers: {'Content-Type': 'multipart/form-data'}
     }
     // 添加请求头
-    axios.post(imageUploadUrl, param, config).then(response => {
-        response = response.data;
+    axios.post(imageUploadUrl, param, config).then(res => {
+        const response = typeof convertCb == 'function' && convertCb(res) || res;
         if (typeof response != "object" || response == null || typeof response.error == 'undefined') {
-            removeForeground();
             alert('上传出错');
         }
         else {
-            if (response.error != false) {
+            if (response.error) {
                 switch (response.error) {
                     case ("filetype"):
                         alert('请选择图片格式的文件上传');
@@ -152,7 +152,7 @@ function uploadpic(editor, imgList, imageUploadUrl) {
                         let tpl = '<img src="%s" />';
                         editor.insertContent(tpl.replace('%s', item));
                     });
-                    
+
                     editor.focus();
                 } else {
                     alert('后端数据错误');

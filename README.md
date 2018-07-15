@@ -28,11 +28,28 @@ tinymce.init({
     autosave_interval: "20s",
     image_advtab: true,
     imageupload_url: '//localhost:3000', // 接收图片的后端地址
+    imageupload_converCb: (res) => { // 根据后端返回的数据，转换成符合插件要求的数据结构
+        return {
+            error: res.data.error,
+            pathList: res.data.data.pathList
+        }
+    },
     table_default_styles: {
         width: "100%",
         borderCollapse: "collapse"
     }
 });
+```
+
+## Response data structure
+```json
+{
+    error: 0,
+    pathList: [
+        "https://xxx/xxxx/img1.jpg",
+        "https://xxx/xxxx/img2.jpg"
+    ]
+}
 ```
 
 ## Result

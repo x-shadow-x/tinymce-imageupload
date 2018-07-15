@@ -24,7 +24,7 @@ import pluginAPI from "./js/main.js";
                 text: 'Ok',
                 subtype: 'primary',
                 onclick: function (e) {
-                    pluginAPI.uploadpic(editor, imgList, tinyMCE.activeEditor.getParam('imageupload_url'));
+                    pluginAPI.uploadpic(editor, imgList, tinyMCE.activeEditor.getParam('imageupload_url'), tinyMCE.activeEditor.getParam('imageupload_converCb'));
                     editor.windowManager.close();
                 }
             }, {
@@ -65,7 +65,7 @@ import pluginAPI from "./js/main.js";
             })
         });
     };
-    
+
     function componentRegister (editor) {
         editor.addButton("imageupload", {
             title: "上传图片",
