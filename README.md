@@ -33,6 +33,14 @@ tinymce.init({
     toolbar: "imageupload", // 注意引入的组件时~需要去掉前面的tinymce-前缀
     autosave_interval: "20s",
     image_advtab: true,
+    // imageupload_headers: {
+    //     token: this.token
+    // },
+    imageupload_headers: () => {
+        return {
+            token: this.token
+        };
+    },
     imageupload_url: '//localhost:3000', // 接收图片的后端地址
     imageupload_converCb: (res) => { // 根据后端返回的数据，转换成符合插件要求的数据结构
         return {
