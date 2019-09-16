@@ -4,7 +4,7 @@ import pluginAPI from "./js/main.js";
 (function () {
     "use strict";
     const global = tinymce.util.Tools.resolve("tinymce.PluginManager");
-    const imgList = { length: 0 };
+    let imgList = { length: 0 };
 
     function open (editor) {
 
@@ -24,7 +24,16 @@ import pluginAPI from "./js/main.js";
                 text: 'Ok',
                 subtype: 'primary',
                 onclick: function (e) {
-                    pluginAPI.uploadpic(editor, imgList, tinyMCE.activeEditor.getParam('imageupload_url'), tinyMCE.activeEditor.getParam('imageupload_converCb'));
+                    pluginAPI.uploadpic(
+                        editor,
+                        imgList,
+                        {
+                            headers: tinyMCE.activeEditor.getParam('imageupload_headers'),
+                            imageUploadUrl: tinyMCE.activeEditor.getParam('imageupload_url'),
+                            convertCb: tinyMCE.activeEditor.getParam('imageupload_converCb')
+                        }).then(() => {
+                        imgList = { length: 0 };
+                    });
                     editor.windowManager.close();
                 }
             }, {

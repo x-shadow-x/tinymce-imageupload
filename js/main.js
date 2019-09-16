@@ -112,11 +112,13 @@ function parentNodes(target, selector) {
  * 上传图片
  * @param {dom} editor
  * @param {Object} imgList 类数组，需要上传的图片的集合
- * @param {string} imageUploadUrl 接收上传图片的服务器url
- * @param {function} convertCb 响应数据的数据结构转换函数
+ * @param {Object} options 其他选项
+ *  @param {string} imageUploadUrl 接收上传图片的服务器url
+ *  @param {function} convertCb 响应数据的数据结构转换函数
+ *  @param {Object} headers 请求头设置参数
  */
-function uploadpic(editor, imgList, imageUploadUrl, convertCb) {
-
+function uploadpic(editor, imgList, options) {
+    const { imageUploadUrl, convertCb, headers } = { ...options };
     /* eslint-disable no-undef */
     let param = new FormData()  // 创建form对象
     const files = imgList;
@@ -127,10 +129,13 @@ function uploadpic(editor, imgList, imageUploadUrl, convertCb) {
     }
 
     let config = {
-        headers: {'Content-Type': 'multipart/form-data'}
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            ...headers && typeof headers === 'function' ? headers() : headers
+        }
     }
     // 添加请求头
-    axios.post(imageUploadUrl, param, config).then(res => {
+    return axios.post(imageUploadUrl, param, config).then(res => {
         const response = typeof convertCb == 'function' && convertCb(res) || res;
         if (typeof response != "object" || response == null || typeof response.error == 'undefined') {
             alert('上传出错');
