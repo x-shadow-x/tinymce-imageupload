@@ -1,18 +1,4 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _axios = require("axios");
-
-var _axios2 = _interopRequireDefault(_axios);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import axios from 'axios'
 
 /**
  * 创建dom元素
@@ -20,9 +6,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {*} options dom属性
  */
 function createElem(name, options) {
-    var elem = document.createElement(name);
+    const elem = document.createElement(name);
     elem.className = options && options.className;
-    return elem;
+    return elem
 }
 
 /**
@@ -32,36 +18,35 @@ function createElem(name, options) {
  * @param {*} $contain 指定将预览图片添加到哪个容器
  */
 function imagePreview(files, orignalLen, $contain) {
-    var frame = document.createDocumentFragment();
-    for (var i = 0; i < files.length; i++) {
-        //预览新添加的图片
-        var file = files[i];
-        var imageType = /^image\//;
+    let frame = document.createDocumentFragment();
+    for (let i = 0; i < files.length; i++) { //预览新添加的图片
+        let file = files[i];
+        let imageType = /^image\//;
 
         if (!imageType.test(file.type)) {
             alert("请选择图片类型上传");
             continue;
         }
 
-        var imgOutBox = createElem("span", {
+        let imgOutBox = createElem("span", {
             className: "prev-img-out-box"
         });
 
-        var imgBox = createElem("div", {
+        let imgBox = createElem("div", {
             className: "prev-img-box"
         });
 
-        var handleHover = createElem("span", {
+        let handleHover = createElem("span", {
             className: "handle-hover"
         });
 
-        var delBtn = createElem("i", {
+        let delBtn = createElem("i", {
             className: "del-btn"
         });
 
-        delBtn.setAttribute("index", orignalLen + i);
+        delBtn.setAttribute("index", orignalLen + i)
 
-        var img = createElem("img", {
+        let img = createElem("img", {
             className: "prev-img"
         });
 
@@ -73,12 +58,12 @@ function imagePreview(files, orignalLen, $contain) {
 
         img.file = file;
 
-        var reader = new FileReader();
-        reader.onload = function (aImg) {
+        let reader = new FileReader();
+        reader.onload = (function (aImg) {
             return function (e) {
                 aImg.src = e.target.result;
             };
-        }(img);
+        })(img);
 
         reader.readAsDataURL(file);
     }
@@ -96,8 +81,8 @@ function imagePreview(files, orignalLen, $contain) {
 function on(elem, targetSelect, event, cb) {
     targetSelect = targetSelect.replace(/[.#]/, '');
 
-    elem.addEventListener(event, function (e) {
-        if (e.target.className.indexOf(targetSelect) >= 0 || e.target.id == targetSelect) {
+    elem.addEventListener(event, (e) => {
+        if(e.target.className.indexOf(targetSelect) >= 0 || e.target.id == targetSelect) {
             cb(e);
         }
     });
@@ -111,11 +96,11 @@ function on(elem, targetSelect, event, cb) {
 function parentNodes(target, selector) {
     selector = selector.replace(/[.#]/, '');
 
-    if (target.parentNode.className.indexOf(selector) >= 0 || target.parentNode.id == selector) {
+    if(target.parentNode.className.indexOf(selector) >= 0 || target.parentNode.id == selector) {
         return target.parentNode;
     } else {
-        if (target.parentNode) {
-            return parentNodes(target.parentNode, selector);
+        if(target.parentNode) {
+            return parentNodes(target.parentNode, selector)
         } else {
             console.error('未找到指定父元素');
             return;
@@ -133,44 +118,43 @@ function parentNodes(target, selector) {
  *  @param {Object} headers 请求头设置参数
  */
 function uploadpic(editor, imgList, options) {
-    var _options = _extends({}, options),
-        imageUploadUrl = _options.imageUploadUrl,
-        convertCb = _options.convertCb,
-        headers = _options.headers;
+    const { imageUploadUrl, convertCb, headers } = { ...options };
     /* eslint-disable no-undef */
-
-
-    var param = new FormData(); // 创建form对象
-    var files = imgList;
+    let param = new FormData()  // 创建form对象
+    const files = imgList;
     delete files['length'];
-    for (var key in files) {
-        var file = files[key];
-        param.append('file', file, file.name); // 通过append向form对象添加数据
+    for(let key in files) {
+        const file = files[key];
+        param.append('file', file, file.name)  // 通过append向form对象添加数据
     }
 
-    var config = {
-        headers: _extends({
-            'Content-Type': 'multipart/form-data'
-        }, headers && typeof headers === 'function' ? headers() : headers)
-        // 添加请求头
-    };return _axios2.default.post(imageUploadUrl, param, config).then(function (res) {
-        var response = typeof convertCb == 'function' && convertCb(res) || res;
-        if ((typeof response === "undefined" ? "undefined" : _typeof(response)) != "object" || response == null || typeof response.error == 'undefined') {
+    let config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            ...headers && typeof headers === 'function' ? headers() : headers
+        }
+    }
+    // 添加请求头
+    return axios.post(imageUploadUrl, param, config).then(res => {
+        const response = typeof convertCb == 'function' && convertCb(res) || res;
+        if (typeof response != "object" || response == null || typeof response.error == 'undefined') {
             alert('上传出错');
-        } else {
+        }
+        else {
             if (response.error) {
                 switch (response.error) {
-                    case "filetype":
+                    case ("filetype"):
                         alert('请选择图片格式的文件上传');
                         break;
                     default:
                         alert('未知错误');
                         break;
                 }
-            } else {
+            }
+            else {
                 if (typeof response.pathList != 'undefined') {
-                    response.pathList.forEach(function (item) {
-                        var tpl = '<img src="%s" />';
+                    response.pathList.forEach(item => {
+                        let tpl = '<img src="%s" />';
                         editor.insertContent(tpl.replace('%s', item));
                     });
 
@@ -180,12 +164,12 @@ function uploadpic(editor, imgList, options) {
                 }
             }
         }
-    });
+    })
 }
 
-exports.default = {
-    on: on,
-    parentNodes: parentNodes,
-    uploadpic: uploadpic,
-    imagePreview: imagePreview
-};
+export default {
+    on,
+    parentNodes,
+    uploadpic,
+    imagePreview
+}

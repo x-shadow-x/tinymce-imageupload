@@ -1,27 +1,31 @@
 {
-    "name": "tinymce-imageupload",
-    "version": "1.0.6",
-    "description": "tinymce富文本图片上传插件",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/x-shadow-x/tinymce-imageupload.git"
-    },
-    "keywords": [
-        "tinymce",
-        "imageupload",
-        "图片上传"
-    ],
-    "author": "junyanLiu",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/x-shadow-x/tinymce-imageupload/issues"
-    },
-    "homepage": "https://github.com/x-shadow-x/tinymce-imageupload#readme",
-    "devDependencies": {
-        "axios": "^0.18.0"
-    }
+  "name": "tinymce-imageupload",
+  "version": "1.0.7",
+  "description": "tinymce富文本图片上传插件",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "babel -d js/ src/",
+    "prepublish": "npm run compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/x-shadow-x/tinymce-imageupload.git"
+  },
+  "keywords": [
+    "tinymce",
+    "imageupload",
+    "图片上传"
+  ],
+  "author": "junyanLiu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/x-shadow-x/tinymce-imageupload/issues"
+  },
+  "homepage": "https://github.com/x-shadow-x/tinymce-imageupload#readme",
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1"
+  }
 }
