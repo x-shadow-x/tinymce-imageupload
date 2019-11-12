@@ -66,6 +66,5 @@ tinymce.init({
 }
 ```
 
-## Result
-
-![demo](http://o7zfl2ftp.bkt.clouddn.com/demo.gif)
+### Screenshot
+<div align=center><img src="https://github.com/x-shadow-x/tinymce-imageupload/blob/master/res.webp" width="600" height="305" ><div>
